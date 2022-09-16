@@ -135,16 +135,18 @@ class ViewController: UIViewController {
 ```
 
 ## Promises
-What is Promises?
+__What is Promises?__
 
-> In general, a promise represents the eventual result of an asynchronous task, respectively the error reason when the task fails. Similar concepts are also called futures
+In general, a promise represents the eventual result of an asynchronous task, respectively the error reason when the task fails. Similar concepts are also called futures
 A promise can be in one of three states:  
-    - pending - the promise is unresolved and the result is not yet available
-    - fulfilled - the promise is resolved with some value
-    - rejected - the promise is resolved with some error
+
+- pending - the promise is unresolved and the result is not yet available
+- fulfilled - the promise is resolved with some value
+- rejected - the promise is resolved with some error 
+
 Once fulfilled or rejected, a promise can never change its state in the future. Also, it can have an infinite number of observers waiting for it to be resolved. Once resolved, either a value or an error is broadcasted to all observers. Each observer, returns a new promise on subscribe, which, in turn, will be resolved with another value or error the observer provides. This enables chaining promises together to create a pipeline into a pipeline of transforming values which are computed asynchronously on different threads.
 
-How to configure promises?
+__How to configure promises?__
 
 __Swift Package Manager__
 
@@ -213,16 +215,41 @@ Use Promise
             promise.reject(error)
         }
 ```
+__Swift Package Manager__
 
+Create a Package.swift file.
+```swift 
+import PackageDescription
 
+let package = Package(
+  name: "RxTestProject",
+  dependencies: [
+    .package(url: "https://github.com/ReactiveX/RxSwift.git", .exact("6.5.0"))
+  ],
+  targets: [
+    .target(name: "RxTestProject", dependencies: ["RxSwift", "RxCocoa"])
+  ]
+)
+```
 
+__CocoaPods__
 
+`use_frameworks!`
+```swift 
+target 'YOUR_TARGET_NAME' do
+    pod 'RxSwift', '6.5.0'
+    pod 'RxCocoa', '6.5.0'
+end
+```
+`$pod install`
 
-
-
-
-
-
+```swift 
+let behaviorRelay = BehaviorRelay<User?>(value: nil)
+behaviorRelay.accept(User(id: "1", name: "Farid"))
+behaviorRelay.subscribe { user in
+    return self.label.text = user?.name
+}.disposed(by: disposeBag)
+```
 
 
 

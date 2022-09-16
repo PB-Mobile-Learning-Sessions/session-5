@@ -77,7 +77,6 @@ __What is OperationQueue?__
 __What are Actors?__
 > Since Swift 5.5 and its built-in concurrency system, a new type declaration keyword has been added to the mix — actor. Swift in actor is same as class or struct, we can define an actor with a keyword as “actor”.
 ```swift
-
 class User {
     let id: String
     let name: String
@@ -134,3 +133,101 @@ class ViewController: UIViewController {
     }
 }
 ```
+
+## Promises
+What is Promises?
+
+> In general, a promise represents the eventual result of an asynchronous task, respectively the error reason when the task fails. Similar concepts are also called futures
+A promise can be in one of three states:  
+    - pending - the promise is unresolved and the result is not yet available
+    - fulfilled - the promise is resolved with some value
+    - rejected - the promise is resolved with some error
+Once fulfilled or rejected, a promise can never change its state in the future. Also, it can have an infinite number of observers waiting for it to be resolved. Once resolved, either a value or an error is broadcasted to all observers. Each observer, returns a new promise on subscribe, which, in turn, will be resolved with another value or error the observer provides. This enables chaining promises together to create a pipeline into a pipeline of transforming values which are computed asynchronously on different threads.
+
+How to configure promises?
+
+__Swift Package Manager__
+
+In your Package.swift file, add Promises dependency to corresponding targets:
+```swift
+let package = Package(
+  // ...
+  dependencies: [
+    .package(url: "https://github.com/google/promises.git", from: "2.1.0"),
+  ],
+  // ...
+)
+```
+
+__CocoaPods__
+
+To use Promises for both Swift and Objective-C, add the following to your Podfile:
+
+`pod 'PromisesSwift'`
+
+Don't forget to add use_frameworks! to your target. 
+
+For Swift, import the module:
+
+```swift 
+import Promises 
+```
+Create Promise
+```swift 
+        let promise = Promise<String> { fulfill, reject in
+          if success {
+            fulfill("Hello world.")
+          } else {
+            reject(someError)
+          }
+        }
+```
+
+Create Promise with pending
+```swift 
+func getUsers() -> Promise<[User]> {
+
+    let promise = Promise<[User]>.pending()
+
+    promise.fulfill([User(id: "123", name: "Farid")])
+
+//  promise.reject(error) 
+
+    return promise
+}
+```
+
+Use Promise
+```swift 
+        let promise = Promise<String>.pending()
+
+        self.getUsers()
+
+        .then { (users) -> String in
+            return users.first!.name
+        }
+        .then { stringUserImageUrl in
+            promise.fulfill(stringUserName)
+        }
+        .catch { error in
+            promise.reject(error)
+        }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

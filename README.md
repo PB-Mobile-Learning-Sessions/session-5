@@ -1,7 +1,7 @@
 ```swift
 //
 //  README.md
-//  Session 3 iOS frameworks 
+//  Session 5 Async programming 
 //
 //  Created by Farid Valiyev on 16.09.22.
 //

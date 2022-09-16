@@ -243,6 +243,20 @@ end
 ```
 `$pod install`
 
+__RxSwift — Subjects__
+Subjects act as both an observable and an observer. They can receive events and also be subscribed to. The subject received .next events, and each time it received an event, it turned around and emitted it to its subscriber.
+
+There are 4 subject types in RxSwift:
+
+• __PublishSubject__: Starts empty and only emits new elements to subscribers.
+
+• __BehaviorSubject__: Starts with an initial value and replays it or the latest element to new subscribers.
+
+• __ReplaySubject__: Initialized with a buffer size and will maintain a buffer of elements up to that size and replay it to new subscribers.
+
+• __Variable__: Wraps a BehaviorSubject, preserves its current value as state, and replays only the latest/initial value to new subscribers.
+
+
 ```swift 
 let behaviorRelay = BehaviorRelay<User?>(value: nil)
 behaviorRelay.accept(User(id: "1", name: "Farid"))
@@ -250,8 +264,6 @@ behaviorRelay.subscribe { user in
     return self.label.text = user?.name
 }.disposed(by: disposeBag)
 ```
-
-
 
 
 
